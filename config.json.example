@@ -1,0 +1,5 @@
+{
+    "client_id": "YOUR_CLIENTID_HERE",
+    "client_secret": "YOUR_CLIENTSECRET_HERE",
+    "port": ":8080"
+}
