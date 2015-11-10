@@ -16,6 +16,17 @@ type Settings struct {
     Port string `json:"port"`
 }
 
+type Attachment struct {
+    ImageURL string `json:"image_url"`
+    Text     string `json:"text"`
+}
+
+type SlackResponse struct {
+    Attachments []Attachment `json:"attachments"`
+    Text string `json:"text"`
+    ResponseType string `json:"response_type"`
+}
+
 type ImgurData struct {
     Data []struct {
         AccountID      interface{} `json:"account_id"`
@@ -77,7 +88,18 @@ func main() {
             return
         }
         fmt.Println(imgurData.Data[0].Link)
-        fmt.Fprintf(w, imgurData.Data[0].Link)
+        //fmt.Fprintf(w, imgurData.Data[0].Link)
+        zzz := Attachment{imgurData.Data[0].Link, "Looks like you!"}
+        c := SlackResponse{ResponseType: "in_channel", Text: "this is you..."}
+        c.Attachments = append(c.Attachments, zzz)
+        js, err := json.Marshal(c)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+
+        w.Header().Set("Content-Type", "application/json")
+        w.Write(js)
     })
 
     log.Fatal(http.ListenAndServe(settings.Port, nil))
