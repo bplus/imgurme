@@ -109,7 +109,7 @@ func main() {
 func getRandomImgur(settings Settings, searchString string) (result []byte, err error) {
     client := &http.Client{}
 
-    req, err := http.NewRequest("GET", "https://api.imgur.com/3/gallery/search/top/?q=" + html.EscapeString(searchString), nil)
+    req, err := http.NewRequest("GET", "https://api.imgur.com/3/gallery/search/top/?q_type=jpg&q_type=png&q_type=gif&q_type=anigif&q=" + html.EscapeString(searchString), nil)
     clientId := "Client-ID " + settings.ClientId
     req.Header.Add("Authorization", clientId)
     resp, err := client.Do(req)
